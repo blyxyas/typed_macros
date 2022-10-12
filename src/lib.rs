@@ -22,19 +22,21 @@
 //! }
 //! ```
 //!
-//! The main macro is [`macrox`][macrox], it takes an input like `macro name(arg1: type1, arg2: type2) { /* Code */ }`, both the [`macrox`][macrox]
-//! 
+//! The main macro is [`macrox`][macrox], it takes an input like `macro
+//! name(arg1: type1, arg2: type2) { /* Code */ }`, both the [`macrox`][macrox]
+//!
 //! [macrox]: macro.macrox.html
 
 #![feature(macro_metavar_expr)]
 #![warn(missing_docs)]
 
 /// # Macrox
-/// 
-/// The main crate's macro, it takes a custom-syntax macro declaration. (`macro name(arg1: type1, arg2: type2 /* ... */) { /* Body */}`)
-/// 
+///
+/// The main crate's macro, it takes a custom-syntax macro declaration. (`macro
+/// name(arg1: type1, arg2: type2 /* ... */) { /* Body */}`)
+///
 /// ## Example
-/// 
+///
 /// ```rust
 /// macrox! {
 /// 	#[macro_export]
@@ -42,28 +44,47 @@
 /// 		// Do something with arg.
 /// 	}
 /// }
-/// 
+///
 /// fn main() {
 /// 	// You can use the macro wherever you want.
 /// 	macro_name!(String::from("Hi"));
 /// }
 /// ```
-/// 
-/// You can declare various macros inside `macrox!`, and they can have attributes.
+///
+/// You can declare various macros inside `macrox!`, and they can have
+/// attributes.
 #[macro_export(local_inner_macros)]
 macro_rules! macrox {
-	($($(#[$attr:meta])* macro $macro_name:ident($($arg: ident: $ty: ty), *) $body: block)*) => {
+	($($(#[$attr:meta])* macro $macro_name:ident$(($($arg: ident: $ty: ty), *) $body: block); +)*) => {
 		$(
-			$(#[$attr])
-		*
+			$(#[$attr])*
 		macro_rules! $macro_name {
-			($$arg: expr) => {
-				{
-					$(let $arg: $ty = $$arg;)*
-					$body
-				}
+				$(
+				($$arg: expr) => {
+					{
+						$(let $arg: $ty = $$arg;)*
+						$body
+					}
+				};
+				)+
 			}
-		}
+		)*
+	};
+
+	// Multibranch with identifiers
+	($($(#[$attr:meta])* macro $macro_name:ident$(($(@$identifier: ident $arg: ident: $ty: ty), *) $body: block); +)*) => {
+		$(
+			$(#[$attr])*
+		macro_rules! $macro_name {
+				$(
+				($(@$identifier)* $$arg: expr) => {
+					{
+						$(let $arg: $ty = $$arg;)*
+						$body
+					}
+				};
+				)+
+			}
 		)*
 	};
 }
@@ -72,18 +93,36 @@ macro_rules! macrox {
 mod tests {
     use crate::macrox;
     #[test]
-    pub fn it_works() {
+    pub fn singlebranched() {
         macrox! {
             macro some_name(y: String) {
-                assert_eq!(y, String::from("hi"));
-            }
+				assert_eq!(y, String::from("hi"));
+			}
         }
 
         // Now you can use it, and every time you use it, it will check the arg types.
         // (In compile-time!)
-
         some_name!(String::from("hi"));
     }
+
+	#[test]
+	fn multibranched() {
+		pub fn it_works() {
+			macrox! {
+				macro some_name(@a y: String) {
+					assert_eq!(y, String::from("hi"));
+				}; (@b x: u32) {
+					assert_eq!(x, 5u32);
+				}
+	
+			}
+	
+			// Now you can use it, and every time you use it, it will check the arg types.
+			// (In compile-time!)
+			some_name!(@a String::from("hi"));
+			some_name!(@b 5u32);
+		}
+	}
 
     pub fn it_warns() {
         macrox! {
