@@ -12,7 +12,7 @@ Add the following dependency to your Cargo.toml file:
 typed_macros = "1.0.0"
 ```
 
-And check the [documentation](https://docs.com/typed_macros) on how to use it.
+And check the [documentation](https://docs.rs/typed_macros/latest/typed_macros/) on how to use it.
 
 ## Example
 
