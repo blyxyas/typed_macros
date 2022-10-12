@@ -3,6 +3,17 @@ A traditional macro can't natively have arguments with type, they can only
 accept a handful of meta types (`expr`, `ident`, `vis`...), with this crate
 you can explicitely say the type of the argument you want the macro to take.
 
+## Usage
+
+Add the following dependency to your Cargo.toml file:
+
+```
+[dependencies]
+typed_macros = "1.0.0"
+```
+
+And check the [documentation](https://docs.com/typed_macros) on how to use it.
+
 ## Example
 
 ```rust

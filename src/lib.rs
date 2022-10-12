@@ -27,6 +27,29 @@
 //! [macrox]: macro.macrox.html
 
 #![feature(macro_metavar_expr)]
+#![warn(missing_docs)]
+
+/// # Macrox
+/// 
+/// The main crate's macro, it takes a custom-syntax macro declaration. (`macro name(arg1: type1, arg2: type2 /* ... */) { /* Body */}`)
+/// 
+/// ## Example
+/// 
+/// ```rust
+/// macrox! {
+/// 	#[macro_export]
+/// 	macro macro_name(arg: String) {
+/// 		// Do something with arg.
+/// 	}
+/// }
+/// 
+/// fn main() {
+/// 	// You can use the macro wherever you want.
+/// 	macro_name!(String::from("Hi"));
+/// }
+/// ```
+/// 
+/// You can declare various macros inside `macrox!`, and they can have attributes.
 #[macro_export(local_inner_macros)]
 macro_rules! macrox {
 	($($(#[$attr:meta])* macro $macro_name:ident($($arg: ident: $ty: ty), *) $body: block)*) => {
