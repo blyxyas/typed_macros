@@ -53,6 +53,42 @@
 ///
 /// You can declare various macros inside `macrox!`, and they can have
 /// attributes.
+/// 
+/// ## Single-branched and Multi-branched macros
+/// 
+/// With this macro you can write both single-branched and multi-branched macros, and both are really easy!
+/// 
+/// ### Single-branched macros
+/// 
+/// These are macros like the one in the example, with just one possible branch.
+/// 
+/// ### Multi-branched macros
+/// 
+/// These are a little bit more complicated, they use identifiers both distinguishing what branch you're trying to use.
+/// 
+/// An identifier is anything that starts with '@', e. g. `@a`
+/// Also, between the two branches there must be a ';'
+/// #### Example
+/// 
+/// ```rust
+/// use typed_macros::macrox;
+/// 
+/// macrox! {
+/// 	#[macro_export]
+/// 	macro my_macro(@a x: String) {
+/// 		// Do something with x being a String
+/// 	};
+/// 
+/// 	(@b x: u32) {
+/// 		// Do something with x being a u32
+/// 	}
+/// }
+/// 
+/// fn main() {
+/// 	my_macro!(@a String::new("hi!"));
+/// 	my_macro!(@b 5_u32);
+/// }
+/// ``` 
 #[macro_export(local_inner_macros)]
 macro_rules! macrox {
 	($($(#[$attr:meta])* macro $macro_name:ident$(($($arg: ident: $ty: ty), *) $body: block); +)*) => {
@@ -109,9 +145,13 @@ mod tests {
 	fn multibranched() {
 		pub fn it_works() {
 			macrox! {
-				macro some_name(@a y: String) {
+				macro some_name
+				
+				(@a y: String) {
 					assert_eq!(y, String::from("hi"));
-				}; (@b x: u32) {
+				};
+				
+				(@b x: u32) {
 					assert_eq!(x, 5u32);
 				}
 	

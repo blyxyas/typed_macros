@@ -33,7 +33,7 @@ fn main() {
 }
 ```
 
-The main macro is [`macrox`][macrox], it takes an input like `macro name(arg1: type1, arg2: type2) { /* Code */ }`, both the [`macrox`][macrox]
+The main macro is [`macrox`][macrox], it takes an input like `macro name(arg1: type1, arg2: type2) { /* Code */ }` Take a look to the [documentation][macrox] for a more in-depth approach to this macro. (Including multibranched macros!)
 
 
 
