@@ -1,3 +1,6 @@
+#![feature(macro_metavar_expr)]
+#![warn(missing_docs)]
+
 //! # Typed macros
 //! A traditional macro can't natively have arguments with type, they can only
 //! accept a handful of meta types (`expr`, `ident`, `vis`...), with this crate
@@ -27,8 +30,6 @@
 //!
 //! [macrox]: macro.macrox.html
 
-#![feature(macro_metavar_expr)]
-#![warn(missing_docs)]
 
 /// # Macrox
 ///
