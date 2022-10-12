@@ -17,8 +17,8 @@
 //! }
 //!
 //! fn main() {
-//! 	foo(String::from("Some string")) // <- This won't throw an error.
-//! 	foo(9u32) // <- This will throw an error.
+//! 	foo!(String::from("Some string")) // <- This won't throw an error.
+//! 	// foo!(9u32) // <- This will throw an error.
 //! }
 //! ```
 //!
@@ -38,6 +38,8 @@
 /// ## Example
 ///
 /// ```rust
+/// use typed_macros::macrox;
+/// 
 /// macrox! {
 /// 	#[macro_export]
 /// 	macro macro_name(arg: String) {
@@ -53,42 +55,44 @@
 ///
 /// You can declare various macros inside `macrox!`, and they can have
 /// attributes.
-/// 
+///
 /// ## Single-branched and Multi-branched macros
-/// 
-/// With this macro you can write both single-branched and multi-branched macros, and both are really easy!
-/// 
+///
+/// With this macro you can write both single-branched and multi-branched
+/// macros, and both are really easy!
+///
 /// ### Single-branched macros
-/// 
+///
 /// These are macros like the one in the example, with just one possible branch.
-/// 
+///
 /// ### Multi-branched macros
-/// 
-/// These are a little bit more complicated, they use identifiers both distinguishing what branch you're trying to use.
-/// 
+///
+/// These are a little bit more complicated, they use identifiers both
+/// distinguishing what branch you're trying to use.
+///
 /// An identifier is anything that starts with '@', e. g. `@a`
 /// Also, between the two branches there must be a ';'
 /// #### Example
-/// 
+///
 /// ```rust
 /// use typed_macros::macrox;
-/// 
+///
 /// macrox! {
 /// 	#[macro_export]
 /// 	macro my_macro(@a x: String) {
 /// 		// Do something with x being a String
 /// 	};
-/// 
+///
 /// 	(@b x: u32) {
 /// 		// Do something with x being a u32
 /// 	}
 /// }
-/// 
+///
 /// fn main() {
 /// 	my_macro!(@a String::new("hi!"));
 /// 	my_macro!(@b 5_u32);
 /// }
-/// ``` 
+/// ```
 #[macro_export(local_inner_macros)]
 macro_rules! macrox {
 	($($(#[$attr:meta])* macro $macro_name:ident$(($($arg: ident: $ty: ty), *) $body: block); +)*) => {
@@ -132,8 +136,8 @@ mod tests {
     pub fn singlebranched() {
         macrox! {
             macro some_name(y: String) {
-				assert_eq!(y, String::from("hi"));
-			}
+                assert_eq!(y, String::from("hi"));
+            }
         }
 
         // Now you can use it, and every time you use it, it will check the arg types.
@@ -141,37 +145,34 @@ mod tests {
         some_name!(String::from("hi"));
     }
 
-	#[test]
-	fn multibranched() {
-		pub fn it_works() {
-			macrox! {
-				macro some_name
-				
-				(@a y: String) {
-					assert_eq!(y, String::from("hi"));
-				};
-				
-				(@b x: u32) {
-					assert_eq!(x, 5u32);
-				}
-	
-			}
-	
-			// Now you can use it, and every time you use it, it will check the arg types.
-			// (In compile-time!)
-			some_name!(@a String::from("hi"));
-			some_name!(@b 5u32);
-		}
-	}
-
-    pub fn it_warns() {
+    #[test]
+    fn multibranched() {
         macrox! {
-            macro this_should_warn(var: u32) {
-                // This will never get checked
-                assert_eq!(var, 0);
-            }
-        }
+                macro some_name
 
-        this_should_warn!("hi");
+                (@a y: String) {
+                    assert_eq!(y, String::from("hi"));
+                };
+
+                (@b x: u32) {
+                    assert_eq!(x, 5u32);
+                }
+
+            // Now you can use it, and every time you use it, it will check the arg types.
+            // (In compile-time!)
+        }
+        some_name!(@a String::from("hi"));
+        some_name!(@b 5u32);
     }
+
+    // pub fn it_warns() {
+    //     macrox! {
+    //         macro this_should_warn(var: u32) {
+    //             // This will never get checked
+    //             assert_eq!(var, 0);
+    //         }
+    //     }
+
+    //     this_should_warn!("hi");
+    // }
 }
