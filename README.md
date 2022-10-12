@@ -9,7 +9,7 @@ Add the following dependency to your Cargo.toml file:
 
 ```
 [dependencies]
-typed_macros = "1.0.0"
+typed_macros = "1.0.1"
 ```
 
 And check the [documentation](https://docs.rs/typed_macros/latest/typed_macros/) on how to use it.
