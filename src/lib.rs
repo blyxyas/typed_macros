@@ -90,7 +90,7 @@
 /// }
 ///
 /// fn main() {
-/// 	my_macro!(@a String::new("hi!"));
+/// 	my_macro!(@a String::from("hi!"));
 /// 	my_macro!(@b 5_u32);
 /// }
 /// ```
