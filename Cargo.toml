@@ -2,6 +2,15 @@
 name = "typed_macros"
 version = "1.0.0"
 edition = "2021"
+license = "MIT"
+license-file = "LICENSE"
+description = "Adds typing to your macro's arguments, making it a lot less of a pain to deal with them."
+homepage = "https://github.com/blyxyas/typed_macros"
+repository = "https://github.com/blyxyas/typed_macros"
+readme = "README.md"
+documentation = "https://docs.rs/typed_macros"
+keywords = ["macro", "macros", "utility"]
+categories = ["development-tools", "development-tools::testing", "rust-patterns"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

@@ -17,8 +17,8 @@ macrox! {
 }
 
 fn main() {
-	foo(String::from("Some string")) // <- This won't throw an error.
-	foo(9u32) // <- This will throw an error.
+	foo(String::from("Some string")); // <- This won't throw an error.
+	foo(9u32); // <- This will throw an error.
 }
 ```
 
