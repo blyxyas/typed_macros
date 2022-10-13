@@ -30,7 +30,6 @@
 //!
 //! [macrox]: macro.macrox.html
 
-
 /// # Macrox
 ///
 /// The main crate's macro, it takes a custom-syntax macro declaration. (`macro
@@ -40,7 +39,7 @@
 ///
 /// ```rust
 /// use typed_macros::macrox;
-/// 
+///
 /// macrox! {
 /// 	#[macro_export]
 /// 	macro macro_name(arg: String) {
@@ -96,7 +95,13 @@
 /// ```
 #[macro_export(local_inner_macros)]
 macro_rules! macrox {
-	($($(#[$attr:meta])* macro $macro_name:ident$(($($arg: ident: $ty: ty), *) $body: block); +)*) => {
+	($(
+		$(#[$attr:meta])*
+		macro $macro_name:ident
+		$(($($arg: ident: $ty: ty), *)
+		$body: block);
+		+)
+	*) => {
 		$(
 			$(#[$attr])*
 		macro_rules! $macro_name {
@@ -113,7 +118,13 @@ macro_rules! macrox {
 	};
 
 	// Multibranch with identifiers
-	($($(#[$attr:meta])* macro $macro_name:ident$(($(@$identifier: ident $arg: ident: $ty: ty), *) $body: block); +)*) => {
+	($(
+		$(#[$attr:meta])*
+		macro $macro_name:ident
+		$(($(@$identifier: ident $arg: ident: $ty: ty), *)
+		$body: block);
+		+)
+	*) => {
 		$(
 			$(#[$attr])*
 		macro_rules! $macro_name {
