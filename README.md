@@ -17,6 +17,7 @@ And check the [documentation](https://docs.rs/typed_macros/latest/typed_macros/)
 ## Example
 
 ```rust
+#![feature(macro_metavar_expr)]
 use typed_macros::macrox;
 
 macrox! {
