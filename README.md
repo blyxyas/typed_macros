@@ -9,7 +9,7 @@ Add the following dependency to your Cargo.toml file:
 
 ```
 [dependencies]
-typed_macros = "1.0.5"
+typed_macros = "1.0.6"
 ```
 
 And check the [documentation](https://docs.rs/typed_macros/latest/typed_macros/) on how to use it.
@@ -40,7 +40,7 @@ The main macro is [`macrox`][macrox], it takes an input like `macro name(arg1: t
 
 You can run `cargo test` in the root directory, but you'll only see an error (an **intended** error) because the macro `this_should_warn` was asking for a `u32` type, and the test tried to use it with a `String`.
 
-[macrox]: macro.macrox.html
+[macrox]: https://docs.rs/typed_macros/latest/typed_macros/macro.macrox.html
 
 ## Contributing
 
