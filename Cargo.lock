@@ -4,4 +4,4 @@ version = 3
 
 [[package]]
 name = "typed_macros"
-version = "1.0.5"
+version = "1.0.6"
